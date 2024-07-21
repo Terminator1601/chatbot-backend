@@ -1,0 +1,42 @@
+
+@font-face {
+    font-family: 'Aquire';
+    font-style: normal;
+    font-weight: bold;
+    src: url("/IDS/static/fonts/aquire/AquireBold-8Ma60.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Aquire';
+    font-style: normal;
+    font-weight: normal;
+    src: url("/IDS/static/fonts/aquire/Aquire-BW0ox.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Avant Garde Book BT';
+    font-style: normal;
+    font-weight: normal;
+    src: url("/IDS/static/fonts/AvantGardeBookBT.woff2") format('woff2');
+}
+
+@font-face {
+    font-family: 'Avant Garde Bold BT';
+    font-style: normal;
+    font-weight: bold;
+    src: url("/IDS/static/fonts/AvantGardeBoldBT.woff2") format('woff2');
+}
+
+@font-face {
+    font-family: 'Avant Garde Demi BT';
+    font-style: normal;
+    font-weight: normal;
+    src: url("/IDS/static/fonts/AvantGardeDemiBT.woff") format('woff2');
+}
+
+@font-face {
+    font-family: 'Avant Garde Demi Oblique BT';
+    font-style: normal;
+    font-weight: normal;
+    src: url("/IDS/static/fonts/AvantGardeDemiObliqueBT.woff") format('woff2');
+}

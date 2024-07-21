@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <!-- Load the static template tag library -->
+    {% load static %}
+    <!-- Reference the locally stored jQuery file -->
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-box {
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .chat-input button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .chat-input button:hover {
+            background: #0056b3;
+        }
+        .message {
+            margin-bottom: 15px;
+        }
+        .message.user {
+            text-align: right;
+        }
+        .message.user .message-content {
+            background: #007bff;
+            color: #fff;
+        }
+        .message.bot .message-content {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .message .message-content {
+            display: inline-block;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" name="query" id="query" placeholder="Ask a question">
+            <button type="submit" id="send-button">Ask</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to append a message to the chat box
+            function appendMessage(text, isUser) {
+                const messageClass = isUser ? 'user' : 'bot';
+                $('#chat-box').append(`
+                    <div class="message ${messageClass}">
+                        <div class="message-content">${text}</div>
+                    </div>
+                `);
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight); // Scroll to the bottom
+            }
+
+            // When the form is submitted
+            $('#send-button').on('click', function(e) {
+                e.preventDefault();
+                const query = $('#query').val().trim();
+                if (query) {
+                    // Append the user message
+                    appendMessage(query, true);
+                    // Send AJAX request
+                    $.ajax({
+                        type: 'POST',
+                        url: '',
+                        data: {
+                            query: query,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            // Append bot responses
+                            response.answers.forEach(answer => {
+                                appendMessage(answer, false);
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX request failed:', status, error);
+                        }
+                    });
+                    $('#query').val(''); // Clear the input
+                }
+            });
+
+            // Allow pressing Enter to send the message
+            $('#query').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key is pressed
+                    e.preventDefault();
+                    $('#send-button').click(); // Trigger the send button
+                }
+            });
+        });
+    </script>
+</body>
+</html>
